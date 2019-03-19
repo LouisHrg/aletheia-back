@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Source;
 use GuzzleHttp\Client;
 
+use Illuminate\Http\Request;
+
 class SourceController extends Controller
 {
     /**
@@ -20,8 +22,6 @@ class SourceController extends Controller
     public function index()
     {
         $sources = Source::all();
-
-
         return response($sources);
     }
 
@@ -39,18 +39,25 @@ class SourceController extends Controller
         return response('Berhasil Tambah Data');
     }
 
-    public function fetch()
+    public function fetch(Request $request)
     {
         $http = new Client();
 
-        $res = $http->request('GET', 'https://api.ozae.com/gnw/sources?date=20180515__20180525&edition=en-us-ny&segment=domain&topic=_&key='.env('OZAE_API_KEY'));
+        $editions = Source::EDITIONS;
+
+        foreach ($editions as $edition) {
+
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/sources?date=20180515__20180525&edition='.$edition.'&segment=domain&topic=_&key='.env('OZAE_API_KEY'));
         $data = json_decode($res->getBody());
 
         foreach ($data->sources as $sourceData) {
-            $source = new Source();
-            $source->name = $sourceData->name;
-            $source->idOzea = $sourceData->id;
-            $source->save();
+
+            Source::updateOrCreate(
+                [ 'idOzae' => $sourceData->id, 'name' => $sourceData->name, 'edition' => $edition ],
+                [ 'name' => $sourceData->name, 'edition' => $edition ]
+            );
+        }
+
         }
 
         return response('ok !');

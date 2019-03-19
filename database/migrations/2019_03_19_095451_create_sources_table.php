@@ -16,7 +16,8 @@ class CreateSourcesTable extends Migration
         Schema::create('sources', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('idOzea')->unique();
+            $table->string('edition', 15);
+            $table->unsignedBigInteger('idOzae')->unique();
             $table->smallInteger('score')->unsigned()->default(0);
             $table->longText('description')->nullable();
             $table->timestamps();
