@@ -21,7 +21,7 @@ class SourceController extends Controller
 
     public function index()
     {
-        $sources = Source::all();
+        $sources = Source::paginate(10);
         return response($sources);
     }
 
@@ -51,9 +51,8 @@ class SourceController extends Controller
         $data = json_decode($res->getBody());
 
         foreach ($data->sources as $sourceData) {
-
             Source::updateOrCreate(
-                [ 'idOzae' => $sourceData->id, 'name' => $sourceData->name, 'edition' => $edition ],
+                [ 'idOzae' => $sourceData->id ],
                 [ 'name' => $sourceData->name, 'edition' => $edition ]
             );
         }

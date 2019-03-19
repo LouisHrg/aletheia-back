@@ -17,6 +17,6 @@ class Source extends Model
   ];
 
   protected $fillable = [
-      'idOzae'
+      'idOzae', 'name', 'edition'
   ];
 }
