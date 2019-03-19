@@ -21,3 +21,6 @@ $router->get('/sources', ['as'=>'sources.index', 'uses'=>'SourceController@index
 $router->get('/sources/{id}', ['as'=>'sources.show', 'uses'=>'SourceController@show']);
 
 $router->get('/sources/fetch',  ['as'=>'sources.fetch', 'uses'=>'SourceController@fetch']);
+
+$router->get('/articles', ['as' => 'articles.index', 'uses'=>'ArticleController@index']);
+$router->get('/articles/{id}', ['as' => 'articles.show', 'uses'=>'ArticleController@show']);
