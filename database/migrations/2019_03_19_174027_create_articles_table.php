@@ -15,11 +15,11 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->longText('content');
+            $table->longText('content')->nullable();
             $table->string('url', 500);
+            $table->string('source', 255);
             $table->string('title', 255);
-            $table->date('date');
-
+            $table->unsignedBigInteger('idOzae')->unique();
             $table->integer('word_id')->unsigned();
             $table->foreign('word_id')->references('id')->on('words');
 
