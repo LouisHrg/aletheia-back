@@ -16,7 +16,6 @@ class CreateWordsTable extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('value', 100);
-            $table->date('date');
             $table->timestamps();
         });
     }

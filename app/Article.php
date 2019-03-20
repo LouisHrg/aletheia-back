@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
   protected $fillable = [
-      'url', 'title', 'content'
+      'url', 'title', 'content', 'idOzae', 'source_id', 'word_id'
   ];
 
   public function word()
