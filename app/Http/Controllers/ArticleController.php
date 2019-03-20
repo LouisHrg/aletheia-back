@@ -32,6 +32,16 @@ class ArticleController extends Controller
         return response($article);
     }
 
+    public function showContent($idOzae)
+    {
+
+        $http = new Client();
+
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/article/'.$idOzae.'/html_content?key='.env('OZAE_API_KEY'));
+        
+        return response($res->getBody());
+    }
+
     public function fetchByWord($word_id)
     {
         $articles = Article::where('word_id', '=', $word_id)->paginate(30);
