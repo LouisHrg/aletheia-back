@@ -54,7 +54,7 @@ class SourceController extends Controller
             foreach ($data->sources as $sourceData) {
                 Source::updateOrCreate(
                 [ 'idOzae' => $sourceData->id ],
-                [ 'name' => $sourceData->name, 'edition' => $edition, 'score' => rand(0, 100) ]
+                [ 'name' => $sourceData->name, 'edition' => $edition, 'score' => rand(20, 100) ]
             );
             }
         }

@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Word extends Model
 {
+
+  const RESTRICTED = [
+    'Facebook',
+    'Twitter',
+    'France',
+    'Français',
+    'français'
+  ];
+
   protected $fillable = [
       'value'
   ];

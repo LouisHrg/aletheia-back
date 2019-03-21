@@ -11,9 +11,6 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return env('APP_TIMEZONE');
-});
 $router->get('/sources/fetch',  ['as'=>'sources.fetch', 'uses'=>'SourceController@fetch']);
 $router->get('/api-key', ['as'=>'api.key', 'uses'=>'ApiController@getKey']);
 

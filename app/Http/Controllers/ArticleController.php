@@ -33,10 +33,7 @@ class ArticleController extends Controller
 
     public function fetchByWord($word_id)
     {
-        $http = new Client();
-
-        $articles = Article::where('word_id', '=', $word_id)->paginate(10);
-
+        $articles = Article::where('word_id', '=', $word_id)->paginate(30);
         return response($articles);
     }
 
