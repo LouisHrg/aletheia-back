@@ -59,9 +59,8 @@ class FetchWordsCommand extends Command
         $data = json_decode($res->getBody());
 
         for ($i = 0; $i < 20; $i ++) {
-
-            if(in_array($data->ngrams[$i]->ngram, Word::RESTRICTED)){
-              continue;
+            if (in_array($data->ngrams[$i]->ngram, Word::RESTRICTED)) {
+                continue;
             }
 
             $word = Word::updateOrCreate(

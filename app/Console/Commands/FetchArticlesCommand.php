@@ -22,7 +22,7 @@ class FetchArticlesCommand extends Command
      *
      * @var string
      */
-    protected $signature = "articles:fetch";
+    protected $signature = "articles:fetch {range}";
 
     /**
      * The console command description.
@@ -52,20 +52,19 @@ class FetchArticlesCommand extends Command
         $http = new Client();
 
         $editions = Source::EDITIONS;
-        $dateRange = DateRange::getDateRange('week');
+        $dateRange = DateRange::getDateRange($this->argument('range'));
 
         foreach ($editions as $edition) {
 
             $res = $http->request('GET', 'https://api.ozae.com/gnw/articles?hard_limit=100&edition='.$edition.'&date='.$dateRange.'&key='.env('OZAE_API_KEY'));
+
             $data = json_decode($res->getBody());
             foreach ($data->articles as $article) {
-                
-                $source = Source::where('name', '=', $data->source->domain)->first();
-                dd($source);
+                $source = Source::where('name', '=', $article->source->domain)->first();
                 if (!is_null($source)) {
                     Article::updateOrCreate(
-                        [ 'idOzae' => $data->id ],
-                        [ 'url' => $data->url, 'image' => $data->img_uri, 'title' => $data->name, 'idOzae' => $data->id, 'source_id' => $source->id, 'word_id' => $word->id ]
+                        [ 'idOzae' => $article->id ],
+                        [ 'url' => $article->url, 'image' => $article->img_uri, 'title' => $article->name, 'idOzae' => $article->id, 'source_id' => $source->id, 'score' => $article->article_score ]
                     );
                 }
             }

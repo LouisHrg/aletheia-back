@@ -36,7 +36,6 @@ class ArticleController extends Controller
 
     public function showContent($idOzae)
     {
-
         $http = new Client();
 
         $res = $http->request('GET', 'https://api.ozae.com/gnw/article/'.$idOzae.'/html_content?key='.env('OZAE_API_KEY'));
@@ -52,7 +51,6 @@ class ArticleController extends Controller
 
     public function getArticleData(Request $request)
     {
-
         $url = urlencode($request->input('url'));
 
         $http = new Client();
@@ -91,9 +89,8 @@ class ArticleController extends Controller
         return response($response);
     }
 
-public function fetchByQuery($query, $date)
+    public function fetchByQuery($query, $date)
     {
-
         $http = new Client();
 
         $dateRange = DateRange::getDateRange($date);
@@ -103,5 +100,6 @@ public function fetchByQuery($query, $date)
 
         return response($data->articles);
     }
+
 
 }

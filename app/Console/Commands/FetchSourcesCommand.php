@@ -53,7 +53,6 @@ class FetchSourcesCommand extends Command
         $editions = Source::EDITIONS;
 
         foreach ($editions as $edition) {
-
             $dateRange = DateRange::getDateRange('week');
 
             $res = $http->request('GET', 'https://api.ozae.com/gnw/sources?date='.$dateRange.'&edition='.$edition.'&segment=domain&topic=_&key='.env('OZAE_API_KEY'));
