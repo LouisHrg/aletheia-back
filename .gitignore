@@ -4,3 +4,7 @@ Homestead.json
 Homestead.yaml
 .env
 /tmp
+.DS_Store
+app/.DS_Store
+app/Console/.DS_Store
+app/Console/Commands/.DS_Store

@@ -23,7 +23,7 @@ class CreateArticlesTable extends Migration
             $table->unsignedBigInteger('idOzae')->unique();
             $table->integer('source_id')->unsigned();
             $table->foreign('source_id')->references('id')->on('sources');
-            $table->integer('word_id')->unsigned();
+            $table->integer('word_id')->nullable()->unsigned();
             $table->foreign('word_id')->references('id')->on('words');
 
             $table->timestamps();
