@@ -6,6 +6,7 @@ use App\Source;
 use Exception;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
+use App\Helpers\DateRange;
 
 /**
  * Class deletePostsCommand
@@ -52,7 +53,10 @@ class FetchSourcesCommand extends Command
         $editions = Source::EDITIONS;
 
         foreach ($editions as $edition) {
-            $res = $http->request('GET', 'https://api.ozae.com/gnw/sources?date=20180515__20180525&edition='.$edition.'&segment=domain&topic=_&key='.env('OZAE_API_KEY'));
+
+            $dateRange = DateRange::getDateRange('week');
+
+            $res = $http->request('GET', 'https://api.ozae.com/gnw/sources?date='.$dateRange.'&edition='.$edition.'&segment=domain&topic=_&key='.env('OZAE_API_KEY'));
             $data = json_decode($res->getBody());
 
             foreach ($data->sources as $sourceData) {
