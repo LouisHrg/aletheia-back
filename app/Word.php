@@ -12,7 +12,9 @@ class Word extends Model
     'Twitter',
     'France',
     'Français',
-    'français'
+    'français',
+    'AFP',
+    'afp',
   ];
 
   protected $fillable = [
