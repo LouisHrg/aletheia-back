@@ -53,40 +53,34 @@ class ArticleController extends Controller
     public function getArticleData(Request $request)
     {
 
-        $url = $request->input('url');
+        $url = urlencode($request->input('url'));
 
         $http = new Client();
-        $client = new GoutteClient();
 
-        $content = "";
-        $traduction = "";
-
-        $crawler = $client->request('GET', $url);
-
-        $data = $crawler->filter('p')->each(function ($node) {
-            return $node->text()."\n";
-        });
-
-        foreach($data as $d){
-            $content .= $d;
-        }
-
-        $tr = new GoogleTranslate();
-        $chunk = array_chunk($data, 1);
-        foreach($chunk as $chunkRow){
-            foreach($chunkRow as $row){
-                $traduction .= $tr->translate($row);
-            }
-        }
-
-        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes_by_content?content='.substr($traduction, 0, 500));
+        $res = $http->request('GET', 'https://api.diffbot.com/v3/article?token=c0554deda254dc2d9400abf9b2b2674a&url='.$url);
         $data = $res->getBody();
+
+
+        $data = json_decode($data)->objects;
+
+
+        $content = $data['0']->text;
+        $title = $data['0']->title;
+        $country = strtolower($data['0']->publisherCountry);
+
+        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes?url='.$url.'&title=article');
+        $data = $res->getBody();
+
+
 
         $data = json_decode($data);
 
         $fakenews = intval(100-intval($data->robot->fake_news*100));
 
         $response = [
+            'contry' => $country,
+            'title' => $title,
+            'title' => $title,
             'fakenews' => $fakenews,
             'clickbait' => intval($data->robot->clickbait*100),
             'biased' => intval($data->robot->extremely_biased*100)
@@ -101,10 +95,10 @@ public function fetchByQuery($query, $date)
     {
 
         $http = new Client();
-        
+
         $dateRange = DateRange::getDateRange($date);
 
-        $res = $http->request('GET', 'https://api.ozae.com/gnw/articles?query='.$query.'&date='.$dateRange.'&key='.env('OZAE_API_KEY'));
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/articles?query='.$query.'&date='.$dateRange.'&key='.env('OZAE_API_KEY').'&hard_limit=50&order[col]=score');
         $data = json_decode($res->getBody());
 
         return response($data->articles);

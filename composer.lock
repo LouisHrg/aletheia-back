@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e840a4b54edfaa80e8b4d015f3d4976",
+    "content-hash": "13d2c2d312ae9d61219fcc6bbee32faa",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -1600,16 +1600,16 @@
         },
         {
             "name": "laravel/lumen-framework",
-            "version": "v5.8.2",
+            "version": "v5.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/lumen-framework.git",
-                "reference": "bb9cb8fb90f84d0a792fe5f7fd48513f01301a57"
+                "reference": "21cd20da632e67ec5bc53b56a51a717ff7202e97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/lumen-framework/zipball/bb9cb8fb90f84d0a792fe5f7fd48513f01301a57",
-                "reference": "bb9cb8fb90f84d0a792fe5f7fd48513f01301a57",
+                "url": "https://api.github.com/repos/laravel/lumen-framework/zipball/21cd20da632e67ec5bc53b56a51a717ff7202e97",
+                "reference": "21cd20da632e67ec5bc53b56a51a717ff7202e97",
                 "shasum": ""
             },
             "require": {
@@ -1681,7 +1681,7 @@
                 "laravel",
                 "lumen"
             ],
-            "time": "2019-03-12T15:34:38+00:00"
+            "time": "2019-03-21T17:35:25+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2211,6 +2211,55 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2016-02-11T07:05:27+00:00"
+        },
+        {
+            "name": "stichoza/google-translate-php",
+            "version": "v4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Stichoza/google-translate-php.git",
+                "reference": "612d79e129176c67ed0c094165746c63c4cba1e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/612d79e129176c67ed0c094165746c63c4cba1e3",
+                "reference": "612d79e129176c67ed0c094165746c63c4cba1e3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "~6.0",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stichoza\\GoogleTranslate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Levan Velijanashvili",
+                    "email": "me@stichoza.com"
+                }
+            ],
+            "description": "Free Google Translate API PHP Package",
+            "homepage": "http://github.com/Stichoza/google-translate-php",
+            "keywords": [
+                "google",
+                "php",
+                "translate",
+                "translator"
+            ],
+            "time": "2018-12-04T00:15:54+00:00"
         },
         {
             "name": "symfony/browser-kit",
