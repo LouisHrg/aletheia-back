@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Source;
 use App\Article;
 use GuzzleHttp\Client;
 use Goutte\Client as GoutteClient;
 
 use Illuminate\Http\Request;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class ArticleController extends Controller
 {
@@ -43,9 +45,11 @@ class ArticleController extends Controller
 
         $url = $request->input('url');
 
+        $http = new Client();
         $client = new GoutteClient();
 
         $content = "";
+        $traduction = "";
 
         $crawler = $client->request('GET', $url);
 
@@ -57,9 +61,15 @@ class ArticleController extends Controller
             $content .= $d;
         }
 
-        $http = new Client();
+        $tr = new GoogleTranslate();
+        $chunk = array_chunk($data, 1);
+        foreach($chunk as $chunkRow){
+            foreach($chunkRow as $row){
+                $traduction .= $tr->translate($row);
+            }
+        }
 
-        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes_by_content?content='.substr($content, 0, 350));
+        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes_by_content?content='.substr($traduction, 0, 500));
         $data = $res->getBody();
 
         $data = json_decode($data);
@@ -71,6 +81,8 @@ class ArticleController extends Controller
             'clickbait' => intval($data->robot->clickbait*100),
             'biased' => intval($data->robot->extremely_biased*100),
         ];
+
+        //dd(intval($response['fakenews']) * intval($response['biased']));
 
         return response($response);
     }
