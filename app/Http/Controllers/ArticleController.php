@@ -59,10 +59,20 @@ class ArticleController extends Controller
 
         $http = new Client();
 
-        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes_by_content?content='.substr($content, 300));
-        $data = utf8_decode(($res->getBody()));
+        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes_by_content?content='.substr($content, 0, 350));
+        $data = $res->getBody();
 
-        return response($data);
+        $data = json_decode($data);
+
+        $fakenews = intval(100-intval($data->robot->fake_news*100));
+
+        $response = [
+            'fakenews' => $fakenews,
+            'clickbait' => intval($data->robot->clickbait*100),
+            'biased' => intval($data->robot->extremely_biased*100),
+        ];
+
+        return response($response);
     }
 
 }
