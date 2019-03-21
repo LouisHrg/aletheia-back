@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use GuzzleHttp\Client;
 use Goutte\Client as GoutteClient;
-
+use App\Helpers\DateRange;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -88,21 +88,9 @@ class ArticleController extends Controller
 public function fetchByQuery($query, $date)
     {
 
-        switch($date){
-            case 'week':
-                $dateRange = date('Ymd', strtotime('-7 days')).'__'.date('Ymd');
-                break;
-            case 'month':
-                $dateRange = date('Ymd', strtotime('-1 month')).'__'.date('Ymd');
-                break;
-            case 'semester':
-                $dateRange = date('Ymd', strtotime('-6 month')).'__'.date('Ymd');
-                break;
-            case 'year':
-                $dateRange = date('Ymd', strtotime('-1 year')).'__'.date('Ymd');
-                break;
-
-        }
+        $http = new Client();
+        
+        $dateRange = DateRange::getDateRange($date);
 
         $res = $http->request('GET', 'https://api.ozae.com/gnw/articles?query='.$query.'&date='.$dateRange.'&key='.env('OZAE_API_KEY'));
         $data = json_decode($res->getBody());
