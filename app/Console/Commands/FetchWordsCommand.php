@@ -75,7 +75,7 @@ class FetchWordsCommand extends Command
                 if (!is_null($source)) {
                     Article::updateOrCreate(
                         [ 'idOzae' => $_data->id ],
-                        [ 'url' => $_data->url, 'title' => $_data->name, 'idOzae' => $_data->id, 'source_id' => $source->id, 'word_id' => $word->id ]
+                        [ 'url' => $_data->url, 'image' => $_data->img_uri, 'title' => $_data->name, 'idOzae' => $_data->id, 'source_id' => $source->id, 'word_id' => $word->id ]
                     );
                 }
             }
