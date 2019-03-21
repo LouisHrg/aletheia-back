@@ -21,4 +21,7 @@ $router->get('/words/{id}', ['as'=>'words.show', 'uses'=>'WordController@show'])
 $router->get('/articles', ['as' => 'articles.index', 'uses'=>'ArticleController@index']);
 $router->get('/articles/data',  ['as'=>'articles.data', 'uses'=>'ArticleController@getArticleData']);
 $router->get('/articles/{id}', ['as' => 'articles.show', 'uses'=>'ArticleController@show']);
+$router->get('/articles/content/{idOzae}', ['as' => 'articles.showContent', 'uses'=>'ArticleController@showContent']);
 $router->get('/articles/word/{word_id}', ['as' => 'articles.fetchByWord', 'uses'=>'ArticleController@fetchByWord']);
+$router->get('/articles/query/{query}/{date}', ['as' => 'articles.fetchByQuery', 'uses'=>'ArticleController@fetchByQuery']);
+

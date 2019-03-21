@@ -9,6 +9,7 @@ use App\Source;
 use Exception;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
+use App\Helpers\DateRange;
 
 /**
  * Class deletePostsCommand
@@ -52,7 +53,9 @@ class FetchWordsCommand extends Command
     {
         $http = new Client();
 
-        $res = $http->request('GET', 'https://api.ozae.com/gnw/ngrams?date=20190301__20190320&limit=20&key='.env('OZAE_API_KEY'));
+        $dateRange = DateRange::getDateRange('week');
+
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/ngrams?date='.$dateRange.'&limit=20&key='.env('OZAE_API_KEY'));
         $data = json_decode($res->getBody());
 
         for ($i = 0; $i < 20; $i ++) {
@@ -72,7 +75,7 @@ class FetchWordsCommand extends Command
                 if (!is_null($source)) {
                     Article::updateOrCreate(
                         [ 'idOzae' => $_data->id ],
-                        [ 'url' => $_data->url, 'title' => $_data->name, 'idOzae' => $_data->id, 'source_id' => $source->id, 'word_id' => $word->id ]
+                        [ 'url' => $_data->url, 'image' => $_data->img_uri, 'title' => $_data->name, 'idOzae' => $_data->id, 'source_id' => $source->id, 'word_id' => $word->id ]
                     );
                 }
             }

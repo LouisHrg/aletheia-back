@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use GuzzleHttp\Client;
 use Goutte\Client as GoutteClient;
-
+use App\Helpers\DateRange;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -30,6 +30,16 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         return response($article);
+    }
+
+    public function showContent($idOzae)
+    {
+
+        $http = new Client();
+
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/article/'.$idOzae.'/html_content?key='.env('OZAE_API_KEY'));
+
+        return response($res->getBody());
     }
 
     public function fetchByWord($word_id)
@@ -73,6 +83,19 @@ class ArticleController extends Controller
         ];
 
         return response($response);
+    }
+
+public function fetchByQuery($query, $date)
+    {
+
+        $http = new Client();
+        
+        $dateRange = DateRange::getDateRange($date);
+
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/articles?query='.$query.'&date='.$dateRange.'&key='.env('OZAE_API_KEY'));
+        $data = json_decode($res->getBody());
+
+        return response($data->articles);
     }
 
 }
