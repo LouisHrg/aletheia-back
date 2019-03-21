@@ -38,7 +38,7 @@ class ArticleController extends Controller
         $http = new Client();
 
         $res = $http->request('GET', 'https://api.ozae.com/gnw/article/'.$idOzae.'/html_content?key='.env('OZAE_API_KEY'));
-        
+
         return response($res->getBody());
     }
 
