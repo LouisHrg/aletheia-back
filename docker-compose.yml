@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgresql:
+    image: 'postgres:10.4'
+    ports:
+    - 127.0.0.1:5432:5432
+    volumes:
+    - './tmp/database:/var/lib/postgresql/data'
+    environment:
+    - PGDATA=/var/lib/postgresql/data
+    - POSTGRES_DB=aletheia
+    - POSTGRES_USER=user
+    - POSTGRES_PASSWORD=password
