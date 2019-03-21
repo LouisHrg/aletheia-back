@@ -69,7 +69,7 @@ class ArticleController extends Controller
         $response = [
             'fakenews' => $fakenews,
             'clickbait' => intval($data->robot->clickbait*100),
-            'biased' => intval($data->robot->extremely_biased*100),
+            'biased' => intval($data->robot->extremely_biased*100)
         ];
 
         return response($response);
