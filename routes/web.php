@@ -23,3 +23,8 @@ $router->get('/articles/data',  ['as'=>'articles.data', 'uses'=>'ArticleControll
 $router->get('/articles/{id}', ['as' => 'articles.show', 'uses'=>'ArticleController@show']);
 $router->get('/articles/content/{idOzae}', ['as' => 'articles.showContent', 'uses'=>'ArticleController@showContent']);
 $router->get('/articles/word/{word_id}', ['as' => 'articles.fetchByWord', 'uses'=>'ArticleController@fetchByWord']);
+<<<<<<< HEAD
+=======
+$router->get('/articles/query/{query}/{date}', ['as' => 'articles.fetchByQuery', 'uses'=>'ArticleController@fetchByQuery']);
+
+>>>>>>> wip

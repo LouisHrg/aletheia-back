@@ -17,7 +17,9 @@ class CreateArticlesTable extends Migration
             $table->bigIncrements('id');
             $table->longText('content')->nullable();
             $table->string('url', 500);
+            $table->string('image', 500)->nullable();
             $table->string('title', 255);
+            $table->integer('confidence')->default(50);
             $table->unsignedBigInteger('idOzae')->unique();
             $table->integer('source_id')->unsigned();
             $table->foreign('source_id')->references('id')->on('sources');
