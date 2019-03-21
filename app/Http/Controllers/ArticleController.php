@@ -85,4 +85,29 @@ class ArticleController extends Controller
         return response($response);
     }
 
+public function fetchByQuery($query, $date)
+    {
+
+        switch($date){
+            case 'week':
+                $dateRange = date('Ymd', strtotime('-7 days')).'__'.date('Ymd');
+                break;
+            case 'month':
+                $dateRange = date('Ymd', strtotime('-1 month')).'__'.date('Ymd');
+                break;
+            case 'semester':
+                $dateRange = date('Ymd', strtotime('-6 month')).'__'.date('Ymd');
+                break;
+            case 'year':
+                $dateRange = date('Ymd', strtotime('-1 year')).'__'.date('Ymd');
+                break;
+
+        }
+
+        $res = $http->request('GET', 'https://api.ozae.com/gnw/articles?query='.$query.'&date='.$dateRange.'&key='.env('OZAE_API_KEY'));
+        $data = json_decode($res->getBody());
+
+        return response($data->articles);
+    }
+
 }
