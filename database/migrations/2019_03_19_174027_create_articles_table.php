@@ -18,10 +18,14 @@ class CreateArticlesTable extends Migration
             $table->longText('content')->nullable();
             $table->string('url', 500);
             $table->string('image', 500)->nullable();
+            $table->string('lang',4)->nullable();
             $table->string('title', 255);
-            $table->integer('confidence')->default(50);
+            $table->integer('trust')->default(0);
+            $table->integer('biased')->default(0);
+            $table->integer('clickbait')->default(0);
             $table->integer('score')->nullable();
-            $table->unsignedBigInteger('idOzae')->unique();
+            $table->string('edition')->nullable();
+            $table->unsignedBigInteger('idOzae')->unique()->nullable();
             $table->integer('source_id')->unsigned();
             $table->foreign('source_id')->references('id')->on('sources');
             $table->integer('word_id')->nullable()->unsigned();

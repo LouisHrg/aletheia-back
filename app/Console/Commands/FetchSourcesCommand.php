@@ -61,7 +61,7 @@ class FetchSourcesCommand extends Command
             foreach ($data->sources as $sourceData) {
                 Source::updateOrCreate(
                 [ 'idOzae' => $sourceData->id ],
-                [ 'name' => $sourceData->name, 'edition' => $edition, 'score' => rand(20, 100) ]
+                [ 'name' => $sourceData->name, 'edition' => $edition, 'score' => 50 ]
             );
             }
         }

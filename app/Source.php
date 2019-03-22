@@ -8,7 +8,7 @@ class Source extends Model
 {
   const EDITIONS = [
     'en-us-ny',
-    'en-us-df',
+    'en-us-sf',
     'en-gb',
     'fr-fr',
     'fr-be',
@@ -19,4 +19,12 @@ class Source extends Model
   protected $fillable = [
       'idOzae', 'name', 'edition', 'score'
   ];
+
+    public function articles()
+  {
+      return $this->hasMany(\App\Article::class, 'article', 'id');
+  }
+
+
+
 }

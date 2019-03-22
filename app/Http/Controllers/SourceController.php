@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Source;
+use App\Article;
 
 use Illuminate\Http\Request;
 
@@ -48,5 +49,19 @@ class SourceController extends Controller
         $data = utf8_decode(($res->getBody()));
 
         return response($data);
+    }
+
+    public function dataByEdition(Request $request)
+    {
+        $edition = $request->input('edition');
+        $total = Article::where('edition', $edition)->count();
+
+        $stats[] = intval(Article::where('edition', $edition)->where('trust', '<=', 20)->count()/$total * 100);
+        $stats[] = intval(Article::where('edition', $edition)->where('trust', '>', 20)->where('trust', '<=', 40)->count()/$total * 100);
+        $stats[] = intval(Article::where('edition', $edition)->where('trust', '>', 40)->where('trust', '<=', 60)->count()/$total * 100);
+        $stats[] = intval(Article::where('edition', $edition)->where('trust', '>', 60)->where('trust', '<=', 80)->count()/$total * 100);
+        $stats[] = intval(Article::where('edition', $edition)->where('trust', '>', 80)->where('trust', '<=', 100)->count()/$total * 100);
+
+        return $stats;
     }
 }

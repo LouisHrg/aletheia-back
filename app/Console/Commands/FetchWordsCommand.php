@@ -43,7 +43,7 @@ class FetchWordsCommand extends Command
     {
         try {
             self::fetchAllWords();
-            $this->info("Words & Articles has been fetched");
+            $this->info("Words & Articles have been fetched");
         } catch (Exception $e) {
             $this->error("An error occurred");
         }

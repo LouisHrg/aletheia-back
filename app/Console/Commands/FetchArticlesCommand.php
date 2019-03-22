@@ -40,19 +40,19 @@ class FetchArticlesCommand extends Command
     public function handle()
     {
         try {
-            self::fetchAllArticles();
+            self::fetchAllArticles($this->argument('range'));
             $this->info("Articles has been fetched");
         } catch (Exception $e) {
             $this->error("An error occurred");
         }
     }
 
-    public static function fetchAllArticles()
+    public static function fetchAllArticles($range)
     {
         $http = new Client();
 
         $editions = Source::EDITIONS;
-        $dateRange = DateRange::getDateRange($this->argument('range'));
+        $dateRange = DateRange::getDateRange($range);
 
         foreach ($editions as $edition) {
 
@@ -64,7 +64,7 @@ class FetchArticlesCommand extends Command
                 if (!is_null($source)) {
                     Article::updateOrCreate(
                         [ 'idOzae' => $article->id ],
-                        [ 'url' => $article->url, 'image' => $article->img_uri, 'title' => $article->name, 'idOzae' => $article->id, 'source_id' => $source->id, 'score' => $article->article_score ]
+                        [ 'url' => urlencode($article->url), 'image' => $article->img_uri, 'title' => $article->name, 'idOzae' => $article->id, 'source_id' => $source->id, 'score' => $article->article_score ]
                     );
                 }
             }

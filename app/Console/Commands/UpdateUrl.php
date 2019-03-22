@@ -10,21 +10,20 @@ use Exception;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use App\Helpers\DateRange;
-
 /**
  * Class deletePostsCommand
  *
  * @category Console_Command
  * @package  App\Console\Commands
  */
-class CrawlCommand extends Command
+class UpdateUrl extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $signature = "db:crawl";
+    protected $signature = "update:urls";
 
     /**
      * The console command description.
@@ -42,10 +41,13 @@ class CrawlCommand extends Command
     public function handle()
     {
         try {
-                $this->call('migrate:fresh');
-                $this->call('sources:fetch');
-                $this->call('words:fetch');
-                $this->call('articles:fetch year');
+            $articles = Article::all();
+
+            foreach ($articles as $article) {
+                $article->url = urlencode($article->url);
+                $article->edition = $article->source->edition;
+                $article->save();
+            }
 
         } catch (Exception $e) {
             $this->error("An error occurred");

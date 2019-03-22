@@ -17,14 +17,14 @@ use App\Helpers\DateRange;
  * @category Console_Command
  * @package  App\Console\Commands
  */
-class CrawlCommand extends Command
+class CrawlSourcesScore extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $signature = "db:crawl";
+    protected $signature = "sources:test";
 
     /**
      * The console command description.

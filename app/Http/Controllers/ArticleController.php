@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Source;
 use App\Article;
 use GuzzleHttp\Client;
-use Goutte\Client as GoutteClient;
 use App\Helpers\DateRange;
 use Illuminate\Http\Request;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+use App\Helpers\ArticleHelper;
 
 class ArticleController extends Controller
 {
@@ -45,46 +44,35 @@ class ArticleController extends Controller
 
     public function fetchByWord($word_id)
     {
-        $articles = Article::where('word_id', '=', $word_id)->paginate(30);
+        $articles = Article::where('word_id', '=', $word_id)->orderBy('trust','DESC')->paginate(30);
         return response($articles);
     }
 
     public function getArticleData(Request $request)
     {
         $url = urlencode($request->input('url'));
-
-        $http = new Client();
-
-        $res = $http->request('GET', 'https://api.diffbot.com/v3/article?token=c0554deda254dc2d9400abf9b2b2674a&url='.$url);
-        $data = $res->getBody();
-
-
-        $data = json_decode($data)->objects;
-
-
-        $content = $data['0']->text;
-        $title = $data['0']->title;
-        $country = strtolower($data['0']->publisherCountry);
-
-        $res = $http->request('GET', 'https://api.fakenewsdetector.org/votes?url='.$url.'&title=article');
-        $data = $res->getBody();
-
-
-
-        $data = json_decode($data);
-
-        $fakenews = intval(100-intval($data->robot->fake_news*100));
-
-        $response = [
-            'contry' => $country,
-            'title' => $title,
-            'title' => $title,
-            'fakenews' => $fakenews,
-            'clickbait' => intval($data->robot->clickbait*100),
-            'biased' => intval($data->robot->extremely_biased*100)
-        ];
-
-        //dd(intval($response['fakenews']) * intval($response['biased']));
+        $article = Article::where('url', 'LIKE', '%'.$url.'%')->first();
+        if ($article === null) {
+            $response = ArticleHelper::check($url);
+            $score = ArticleHelper::getScore($response['content']);
+            $article = new Article();
+            $source = Source::where('name', 'LIKE', '%'.$response['source'].'%')->first();
+            $article->source_id = $source->id;
+            $article->title = $response['title'];
+            $article->url = urlencode($url);
+            $article->lang = $response['lang'];
+            $article->biased = $response['biased'];
+            $article->trust = $response['fakenews'];
+            $article->clickbait = $response['clickbait'];
+            $article->save();
+        } else {
+            $response = [
+                'biased' => $article->biased,
+                'fakenews' => $article->trust,
+                'clickbait' => $article->clickbait,
+                'lang' => $article->lang
+            ];
+        }
 
         return response($response);
     }
@@ -101,5 +89,21 @@ class ArticleController extends Controller
         return response($data->articles);
     }
 
+    public function manualTest()
+    {
+        $http = new Client();
 
+        $articles = Article::all();
+
+        foreach ($articles as $article) {
+            if ($article->trust === 0) {
+                $check = ArticleHelper::check(urlencode($article->url));
+                $article->biased = $check['biased'];
+                $article->trust = $check['fakenews'];
+                $article->clickbait = $check['clickbait'];
+                $article->save();
+                echo $article->id.' saved';
+            }
+        }
+    }
 }

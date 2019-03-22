@@ -14,9 +14,12 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\CrawlCommand::class,
+        Commands\CrawlSourcesScore::class,
+        Commands\UpdateUrl::class,
         Commands\FetchSourcesCommand::class,
         Commands\FetchWordsCommand::class,
         Commands\FetchArticlesCommand::class,
+        Commands\TestArticlesCommand::class,
     ];
 
     /**
