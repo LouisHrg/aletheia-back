@@ -54,14 +54,31 @@ class ArticleController extends Controller
         $article = Article::where('url', 'LIKE', '%'.$url.'%')->first();
         if ($article === null) {
             $response = ArticleHelper::check($url);
-            $score = ArticleHelper::getScore($response['content']);
+            if(isset($response['source'])){
+                $source = Source::where('name', 'LIKE', '%'.$response['source'].'%')->first();
+                $sourceScore = $source->score;
+            }else{
+                $sourceScore = 100;
+            }
+            $content = isset($response['content']) ? $response['content'] : null;
+            $score = ArticleHelper::calculateScore(
+                $response['biased'],
+                $response['fakenews'],
+                $response['clickbait'],
+                $content,
+                $sourceScore
+            );
+            if($response['lang'] !== 'en'){
+                $score = intval($score*1.30);
+            }
+            $response['score'] = $score;
             $article = new Article();
-            $source = Source::where('name', 'LIKE', '%'.$response['source'].'%')->first();
             $article->source_id = $source->id;
             $article->title = $response['title'];
             $article->url = urlencode($url);
             $article->lang = $response['lang'];
             $article->biased = $response['biased'];
+            $article->score = $score;
             $article->trust = $response['fakenews'];
             $article->clickbait = $response['clickbait'];
             $article->save();
@@ -70,7 +87,8 @@ class ArticleController extends Controller
                 'biased' => $article->biased,
                 'fakenews' => $article->trust,
                 'clickbait' => $article->clickbait,
-                'lang' => $article->lang
+                'lang' => $article->lang,
+                'score' => $article->score,
             ];
         }
 

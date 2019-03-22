@@ -33,14 +33,6 @@ class SourceController extends Controller
         return response($source);
     }
 
-    public function store(Request $request)
-    {
-        $source = new Source();
-        dd($request);
-
-        return response('Berhasil Tambah Data');
-    }
-
     public function content($idOzae)
     {
         $http = new Client();
